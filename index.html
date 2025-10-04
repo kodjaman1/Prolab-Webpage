@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROLAB - Ankara Üniversitesi Laboratuvarı Öğrenci Topluluğu</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* ------------------- */
+        /* --- GENEL CSS --- */
+        /* ------------------- */
+        
+        /* Renk Paleti ve Değişkenler - Buradan renkleri kolayca değiştirebilirsiniz */
+        :root {
+            --dark-navy: #0a192f;      /* Ana Arka Plan Rengi */
+            --navy: #112240;          /* Kart ve İkincil Arka Plan Rengi */
+            --light-navy: #233554;    /* Vurgulu Arka Plan Rengi */
+            --slate: #a8b2d1;         /* Normal Yazı Rengi */
+            --light-slate: #ccd6f6;   /* Başlık ve Vurgulu Yazı Rengi */
+            --green: #64ffda;         /* Ana Vurgu Rengi (Butonlar, Linkler) */
+            --green-tint: rgba(100, 255, 218, 0.1); /* Buton hover efekti için */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-navy);
+            color: var(--slate);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+            opacity: 0; /* Animasyon için başlangıç durumu */
+            transform: translateY(30px); /* Animasyon için başlangıç durumu */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1, h2, h3 {
+            color: var(--light-slate);
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--green);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--green);
+            border: 1px solid var(--green);
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: var(--green-tint);
+        }
+
+        /* ------------------- */
+        /* --- HEADER / NAV --- */
+        /* ------------------- */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: top 0.3s;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-item {
+            margin-left: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--light-slate);
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--green);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--green);
+            transition: all 0.3s ease-in-out;
+        }
+
+
+        /* ------------------- */
+        /* --- HERO BÖLÜMÜ --- */
+        /* ------------------- */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: left;
+            padding-top: 80px; /* Header yüksekliği kadar boşluk */
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem); /* Dinamik font boyutu */
+            line-height: 1.1;
+        }
+        .hero-content h3 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--slate);
+            margin-top: 10px;
+        }
+        .hero-content p {
+            max-width: 600px;
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+        }
+        .hero-content .cta-button {
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+
+        /* ------------------- */
+        /* --- HAKKIMIZDA --- */
+        /* ------------------- */
+        #hakkimizda .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        #hakkimizda h3 {
+            color: var(--green);
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background: var(--navy);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .team-member img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        /* ------------------- */
+        /* --- FAALİYETLER --- */
+        /* ------------------- */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: var(--navy);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--light-navy);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card .icon {
+            font-size: 2.5rem;
+            color: var(--green);
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            color: var(--light-slate);
+            margin-bottom: 0.5rem;
+        }
+
+        /* ------------------- */
+        /* --- NEDEN KATILMALISIN --- */
+        /* ------------------- */
+        #neden-katilmalisin ul {
+            list-style: none;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        #neden-katilmalisin li {
+            background: var(--navy);
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            border-left: 4px solid var(--green);
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        #neden-katilmalisin li:hover {
+            background-color: var(--light-navy);
+        }
+        
+        #neden-katilmalisin li strong {
+            display: block;
+            color: var(--light-slate);
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+
+        /* ------------------- */
+        /* --- BİZE KATIL --- */
+        /* ------------------- */
+        #katil {
+            text-align: center;
+        }
+
+        #katil p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .social-links {
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: var(--slate);
+            font-size: 2rem;
+            margin: 0 1rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--green);
+            transform: translateY(-5px);
+        }
+
+        /* ------------------- */
+        /* --- FOOTER --- */
+        /* ------------------- */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--light-navy);
+            font-size: 0.9rem;
+        }
+        
+        footer a {
+            color: var(--green);
+            text-decoration: none;
+        }
+
+
+        /* ------------------- */
+        /* --- MOBİL UYUMLULUK --- */
+        /* ------------------- */
+        @media(max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background-color: var(--dark-navy);
+                width: 100%;
+                height: calc(100vh - 80px);
+                text-align: center;
+                transition: 0.3s;
+            }
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-item {
+                margin: 2rem 0;
+            }
+            
+            .nav-link {
+                font-size: 1.5rem;
+            }
+
+            #hakkimizda .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="container navbar">
+            <a href="#hero" class="nav-logo">PROLAB</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#hakkimizda" class="nav-link">Hakkımızda</a></li>
+                <li class="nav-item"><a href="#faaliyetler" class="nav-link">Faaliyetler</a></li>
+                <li class="nav-item"><a href="#neden-katilmalisin" class="nav-link">Neden Katılmalısın?</a></li>
+                <li class="nav-item"><a href="#katil" class="nav-link cta-button">Bize Katıl</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h3 style="color: var(--green);">Ankara Üniversitesi Proje Laboratuvarı Öğrenci Topluluğu</h3>
+                    <h1>Teoriden Pratiğe,<br>Fikirden Patente.</h1>
+                    <p>Ankara Üniversitesi'nin proje odaklı öğrenme ekosistemi PROLAB'a hoş geldin. Proje geliştirmek isteyen öğrencilerle akademisyenleri buluşturuyor, TÜBİTAK ve BAP gibi fonlara giden yolda birlikte yürüyoruz.</p>
+                    <a href="#katil" class="cta-button">Projeni Hayata Geçir!</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="hakkimizda">
+            
+            <div class="container">
+                <h2>Amacımız</h2>
+                <p>PROLAB, proje tabanlı öğrenmeyi merkeze alan, öğrencilerin proje geliştirmek için ekip arkadaşı ve akademisyen bulabilecekleri, diğer öğrencilerin deneyim ve bilgi birikimlerinden faydalanabilecekleri bir ortam sağlamayı misyon edinmiş bir öğrenci topluluğudur.</p>
+            </div>
+            
+        </section>
+            <div>
+                <h2>Yönetim Ekibimiz</h2>
+            </div>
+            
+            <div class="team-container">
+                <div class="team-member">
+                    <img src="images/omer-kocaman.jpeg" alt="Ömer Kocaman">
+                    <h4>Topluluk Başkanı: Ömer Kocaman</h4>
+                    <a href="https://www.linkedin.com/in/ömer-kocaman-774883248" target="_blank">LinkedIn</a>
+                </div>
+                <div class="team-member">
+                    <img src="images/talha-aydin.jpeg" alt="Talha Aydın">
+                    <h4>Başkan Yardımcısı: Talha Aydın</h4>
+                    <a href="https://www.linkedin.com/in/muhammet-talha-aydın-36b067338/" target="_blank">LinkedIn</a>
+                </div>
+                <div class="team-member">
+                    <img src="images/berke-acar.jpeg" alt="Berke Mahmut Acar">
+                    <h4>Berke Mahmut Acar</h4>
+                    <a href="https://www.linkedin.com/in/berke-acar-87812115b/" target="_blank">LinkedIn</a>
+                </div>
+                <div class="team-member">
+                    <img src="images/efe-tuna-cetin.jpeg" alt="Efe Tuna Çetin">
+                    <h4>Efe Tuna Çetin</h4>
+                    <a href="https://www.linkedin.com/in/efe-tuna-ç-45b0b425b/" target="_blank">LinkedIn</a>
+                </div>
+                <div class="team-member">
+                    <img src="images/sueda-acielma.jpeg" alt="Süeda Acıelma">
+                    <h4>Süeda Acıelma</h4>
+                    <a href="https://www.linkedin.com/in/süeda-acıelma-9a4410330/" target="_blank">LinkedIn</a>
+                </div>
+                <div class="team-member">
+                    <img src="images/ayoub-samir-mohamed.jpeg" alt="Ayoub Samir Mohamed">
+                    <h4>Ayoub Samir Mohamed</h4>
+                    <a href="https://www.linkedin.com/in/ayoub-samir-13193033a/" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+
+        <section id="faaliyetler">
+            <div class="container">
+                <h2>Faaliyetlerimizle Değer Yaratıyoruz</h2>
+                <div class="cards-container">
+                    <div class="card">
+                        <div class="icon"><i class="fa-solid fa-people-group"></i></div>
+                        <h3>Proje Geliştirme Grupları</h3>
+                        <p>Projeleri gerçekleştirmek için ekip arkadaşları ve hoca bulmanı sağlıyoruz.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon"><i class="fa-solid fa-code"></i></div>
+                        <h3>Teknik Yetkinlik Atölyeleri</h3>
+                        <p>Bir mühendislik alanında ilerlemiş öğrencilerin eğitim vermelerini sağlıyoruz.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon"><i class="fa-solid fa-person-chalkboard"></i></div>
+                        <h3>Proje Sunumları</h3>
+                        <p>Geliştirdiğiniz projeleri çevrimiçi veya yüz yüze ortamlarda sunmanızı sağlıyoruz. Projelerden elde edilen deneyimlerin paylaşılmasını ve tüm öğrencilerin faydalanmasını istiyoruz.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon"><i class="fa-solid fa-file-pen"></i></div>
+                        <h3>Proje Yazımı Danışmanlığı</h3>
+                        <p>TÜBİTAK 1001, 1002, 1005, 1507, 2209-A/B, BAP gibi destek programlarına yönelik proje yazma ve bütçeleme konularında yardımcı oluyoruz.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="neden-katilmalisin">
+            <div class="container">
+                <h2>Kariyerine Değer Kat</h2>
+                <ul>
+                    <li><strong>CV'ne TÜBİTAK Projesi Ekle:</strong> Kendi projen için fon bul veya fonlanmış bir projede araştırmacı olarak yer al.</li>
+                    <li><strong>Projen İçin Akademisyen Bul:</strong> Alanında uzman hocalardan birebir mentörluk alarak vizyonunu geliştir.</li>
+                    <li><strong>Sadece Geliştirmeyi Değil, Proje Yönetmeyi Öğren:</strong> Takım yönetimi, bütçeleme ve raporlama gibi kritik becerileri yaşayarak öğren.</li>
+                    <li><strong>Fikrini ve Emeğini Koruma Altına Al:</strong> Patent süreçleri hakkında bilgi sahibi olarak geliştirdiğin teknolojinin haklarına sahip çık.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="katil">
+            <div class="container">
+                <h2>Bizi Takip Et ve Etkinliklerimizden Haberdar Ol</h2>
+                <p>Bir proje fikrini hayata geçirmek için ekip arkadaşı arıyorsan ya da bir projede yer almak için başvuruda bulunmak istiyorsan, PROLAB'da seni bekliyoruz!</p>
+                <div class="social-links">
+                    <p><a style="text-decoration: none;" href="https://www.linkedin.com/company/proje-laboratuvari/" target="_blank"><i class="fab fa-linkedin"></i> Proje Laboratuvarı</a></p>
+                    <p><a style="text-decoration: none;" href="https://www.instagram.com/prolab_au/?e=eed18648-9519-4fdd-a9e3-f35f5f14760b&g=5" target="_blank"><i class="fab fa-instagram"></i> Prolab_au</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 PROLAB - Ankara Üniversitesi Proje Laboratuvarı Öğrenci Topluluğu. Tüm hakları saklıdır.</p>
+            <p><a href="mailto:prolab.society@gmail.com">prolab.society@gmail.com</a></p>
+            </div>
+    </footer>
+
+
+    <script>
+    // ------------------- */
+    // --- JAVASCRIPT --- */
+    // ------------------- */
+
+    // Mobil menü (hamburger) açma/kapama
+    const hamburger = document.querySelector(".hamburger");
+    const navMenu = document.querySelector(".nav-menu");
+
+    hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
+    });
+
+    document.querySelectorAll(".nav-link").forEach(n => n.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        navMenu.classList.remove("active");
+    }));
+
+
+    // Kaydırınca beliren animasyonlar
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1 // %10'u görününce animasyon tetiklensin
+    });
+
+    const sections = document.querySelectorAll('section');
+    sections.forEach((section) => {
+        observer.observe(section);
+    });
+
+    </script>
+</body>
+</html>
